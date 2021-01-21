@@ -1,0 +1,110 @@
+body {
+  height: 100vh;
+  padding: 0;
+}
+/*Main div/Top div*/
+.lorrydoc-main{
+  background-color: orange;
+  height: 100%;
+}
+/*Welcome*/
+.lorrydoc-welcome-container{
+  text-align: center;
+  background-color: grey;
+  height: 75px;
+}
+.lorrydoc-welcome-container h3{
+  position: absolute;
+  top: 25px;
+}
+.back{
+  position: absolute;
+  top: 0;
+  left: 10px;
+}
+/*Selection div*/
+.select-description{
+}
+.select-container{
+  text-align: center;
+}
+.select-container span{
+  font-size: 25px;
+}
+.select-container select{
+  width: 100%;
+  font-size: 25px;
+}
+
+/*Solution/Result div*/
+.selected-brand-div{
+  text-align: center;
+  margin-top:20px;
+  margin-bottom: 35px;
+}
+.selected-brand-div span{
+  font-size: 20px;
+  font-style: oblique;
+  font-weight: 900;
+}
+.selected-problem-div{
+  margin-bottom: 35px;
+}
+.selected-problem-div span{
+  font-size: 20px;
+  font-style: oblique;
+  font-weight: 900;
+}
+/*Login*/
+.login-container{
+  margin-top: 25px;
+}
+.login-container input[type=email], .login-container input[type=password]{
+  width: 60%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid black;
+  font-size: 20px;
+  outline: none;
+}
+.login-container label{
+  display: inline-block;
+  width: 120px;
+  text-align: right;
+  font-size: 20px;
+}
+.login-container input[type=submit]{
+  position: absolute;
+  width: 100px;
+  background-color: lightgrey;
+  border: none;
+  right:0;
+  top: 175px;
+}
+
+/*Register*/
+.register-container{
+  margin-top: 25px;
+}
+.register-container input[type=text], .register-container input[type=password],  .register-container input[type=email]{
+  width: 90%;
+  background: transparent;
+  float: right;
+  clear: left;
+  border: none;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  font-size: 20px;
+  margin-top: 5px;
+  outline: none;
+  right: 0;
+}
+
+.register-container input[type=submit]{
+  position: absolute;
+  width: 100px;
+  background-color: lightgrey;
+  border: none;
+  right:0;
+  top: 260px;
+}
