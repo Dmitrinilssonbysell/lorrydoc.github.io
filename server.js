@@ -14,8 +14,9 @@ const mysql = require("mysql");
 const path = require("path");
 //app.listen(1337)
 const port = 1337;
-const host = "localhost";
-//const host = "192.168.43.78";
+//const host = "localhost";
+//const host = "127.0.0.1";
+const host = "192.168.43.78";
 
 
 app.use(express.static(__dirname + '/public'));
@@ -33,7 +34,8 @@ require('dotenv').config();
 let dbConnection = mysql.createConnection({
     host: process.env.DB_ADMIN_HOST,
     user: process.env.DB_ADMIN_USER,
-    password: process.env.DB_ADMIN_PASSWORD
+    password: process.env.DB_ADMIN_PASSWORD,
+    database: process.env.DB_ADMIN_DATABASE
 });
 
 //dbConnection.connect((err) => {
@@ -48,8 +50,8 @@ let dbConnection = mysql.createConnection({
 //dbConnection.query("SELECT * FROM cardealers_help.scania_questions", function (err, result, fields) {
 
 dbConnection.connect(function (err) {
-    dbConnection.query("SELECT * FROM cardealers_help.volvo_questions", function (err, result, fields) {
-        console.log("Mysql DB Query");
+    dbConnection.query("SELECT * FROM lorrydoctor_db.brand", function (err, result, fields) {
+        console.log("Connected to lorrydoctor_db");
         if (err) throw err;
         console.log(result);
     });

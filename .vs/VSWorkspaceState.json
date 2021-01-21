@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\public"
+    "\\public",
+    "\\public\\php"
   ],
-  "SelectedNode": "\\public",
+  "SelectedNode": "\\.env",
   "PreviewInSolutionExplorer": false
 }
