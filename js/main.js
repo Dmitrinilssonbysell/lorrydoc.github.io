@@ -120,17 +120,17 @@ function loadSelectBrand(brandSelectionArr){
 
   this.brandSelectionArr = brandSelectionArr;
 
-  //Create back button
-  this.backSpan = document.createElement("span");
-  this.backSpan.textContent = "Back";
-  this.backSpan.setAttribute("class", "back");
-
   this.buildBrandSelect = function(){
     this.brandDiv.setAttribute("class", "select-container");
     this.brandSelectElem.setAttribute("class", "brand-select");
     this.selectDesc.setAttribute("class", "select-description");
 
     this.selectDesc.innerHTML = "Select your manufacturer";
+
+    //Create back button
+    this.backSpan = document.createElement("span");
+    this.backSpan.textContent = "Back";
+    this.backSpan.setAttribute("class", "back");
 
     if(this.brandSelectElem.length < 3){
       //Adding "Select Manufacturer" At top of select element
