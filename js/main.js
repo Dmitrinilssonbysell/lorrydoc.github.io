@@ -34,7 +34,7 @@ var problemSelected = 0;
 var solutionSelected = 0;
 
 /*Variable will change when login check is done*/
-var loggedin = 0;
+var loggedin = 1;
 
 //Onload window
 window.onload = function() {
