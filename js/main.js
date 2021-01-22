@@ -95,15 +95,17 @@ function loadForm(val){
 
   //Back button to return in the process && onclick function
   var selectBackBtn = lorryDocWelcome.querySelector(".back");
-  selectBackBtn.onclick = function(){
-    if(brandSelected == 1 && problemSelected == 0){
-      document.querySelector(".selected-brand-div").remove();
-      problemObject.problemDiv.remove();
-      brandObject.buildBrandSelect();
-    }
-    else if(brandSelected == 1 && problemSelected == 1){
-      problemObject.problemDiv.remove();
-      problemObject.buildProblemSelect();
+  if(selectBackBtn.length > 1){
+    selectBackBtn.onclick = function() {
+      if (brandSelected == 1 && problemSelected == 0) {
+        document.querySelector(".selected-brand-div").remove();
+        problemObject.problemDiv.remove();
+        brandObject.buildBrandSelect();
+      }
+      else if (brandSelected == 1 && problemSelected == 1) {
+        problemObject.problemDiv.remove();
+        problemObject.buildProblemSelect();
+      }
     }
   }
 }
