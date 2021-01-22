@@ -34,7 +34,7 @@ var problemSelected = 0;
 var solutionSelected = 0;
 
 /*Variable will change when login check is done*/
-var loggedin = 0;
+var loggedin = 1;
 
 //Onload window
 window.onload = function() {
@@ -95,15 +95,17 @@ function loadForm(val){
 
   //Back button to return in the process && onclick function
   var selectBackBtn = lorryDocWelcome.querySelector(".back");
-  selectBackBtn.onclick = function(){
-    if(brandSelected == 1 && problemSelected == 0){
-      document.querySelector(".selected-brand-div").remove();
-      problemObject.problemDiv.remove();
-      brandObject.buildBrandSelect();
-    }
-    else if(brandSelected == 1 && problemSelected == 1){
-      problemObject.problemDiv.remove();
-      problemObject.buildProblemSelect();
+    if (selectBackBtn.length > 1) {
+        selectBackBtn.onclick = function () {
+            if (brandSelected == 1 && problemSelected == 0) {
+                document.querySelector(".selected-brand-div").remove();
+                problemObject.problemDiv.remove();
+                brandObject.buildBrandSelect();
+            }
+            else if (brandSelected == 1 && problemSelected == 1) {
+                problemObject.problemDiv.remove();
+                problemObject.buildProblemSelect();
+            }
     }
   }
 }
@@ -118,10 +120,7 @@ function loadSelectBrand(brandSelectionArr){
 
   this.brandSelectionArr = brandSelectionArr;
 
-  //Create back button
-  this.backSpan = document.createElement("span");
-  this.backSpan.textContent = "Back";
-  this.backSpan.setAttribute("class", "back");
+  
 
   this.buildBrandSelect = function(){
     this.brandDiv.setAttribute("class", "select-container");
@@ -129,6 +128,11 @@ function loadSelectBrand(brandSelectionArr){
     this.selectDesc.setAttribute("class", "select-description");
 
     this.selectDesc.innerHTML = "Select your manufacturer";
+
+    //Create back button
+    this.backSpan = document.createElement("span");
+    this.backSpan.textContent = "Back";
+    this.backSpan.setAttribute("class", "back");
 
     if(this.brandSelectElem.length < 3){
       //Adding "Select Manufacturer" At top of select element
