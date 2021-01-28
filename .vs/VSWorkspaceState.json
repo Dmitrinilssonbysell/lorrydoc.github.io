@@ -1,10 +1,11 @@
 {
   "ExpandedNodes": [
     "",
+    "\\.idea",
     "\\public",
     "\\public\\css",
     "\\public\\js"
   ],
-  "SelectedNode": "\\public\\css\\index.css",
+  "SelectedNode": "\\public\\js\\main.js",
   "PreviewInSolutionExplorer": false
 }

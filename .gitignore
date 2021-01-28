@@ -8,6 +8,7 @@ bin-release/
 .settings/
 .env
 .idea
+
 # Executables
 *.swf
 *.air
