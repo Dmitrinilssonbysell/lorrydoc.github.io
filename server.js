@@ -47,11 +47,21 @@ let dbConnection = mysql.createConnection({
 //    createDB();
 //});
 
-//dbConnection.query("SELECT * FROM cardealers_help.scania_questions", function (err, result, fields) {
+//dbConnection.query("SELECT * FROM cardealers_help.scania_solution", function (err, result, fields) {
 
 dbConnection.connect(function (err) {
-    dbConnection.query("SELECT * FROM lorrydoctor_db.brand", function (err, result, fields) {
-        console.log("Connected to lorrydoctor_db");
+    dbConnection.query("SHOW DATABASES;", function (err, result, fields) {
+        console.log("MySQL Databases.");
+        if (err) throw err;
+        console.log(result);
+    });
+    dbConnection.query("USE lorrydoctor_db;", function (err, result, fields) {
+        console.log("DB lorrydoctor_db has been selected!");
+        if (err) throw err;
+        console.log(result);
+    });
+    dbConnection.query("SHOW TABLES;", function (err, result, fields) {
+        console.log("DB lorrydoctor_db Tables.");
         if (err) throw err;
         console.log(result);
     });
