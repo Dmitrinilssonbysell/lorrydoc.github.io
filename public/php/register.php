@@ -4,9 +4,9 @@
 
 //Sql connection
 $hostname = "127.0.0.1:3306";
-$database = "lorrydoc";
+$database = "lorrydoc_db";
 $username = "root";
-$password = "root";
+$password = "thecoloris123";
 
 // Connect to the database
 $mysqli = new mysqli($hostname, $username, $password, $database);
