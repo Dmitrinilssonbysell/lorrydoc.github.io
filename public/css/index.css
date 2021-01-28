@@ -103,8 +103,8 @@ body {
 .register-container input[type=submit]{
   position: absolute;
   width: 100px;
+  height: 25px;
   background-color: lightgrey;
   border: none;
   right:0;
-  top: 260px;
 }
