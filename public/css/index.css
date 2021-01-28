@@ -4,29 +4,40 @@ body {
 }
 /*Main div/Top div*/
 .lorrydoc-main{
-  background-color: orange;
+  background-color: D8E0E7;
   height: 100%;
 }
 /*Welcome*/
 .lorrydoc-welcome-container{
-  text-align: center;
-  background-color: grey;
-  height: 75px;
+  /* text-align: center; */
+  background-image: url(images/lorry-purple.jpeg);
+  padding: 5px;
+  height: 125px;
 }
 .lorrydoc-welcome-container h3{
-  position: absolute;
-  top: 25px;
+  position: relative;
+  top: 125px;
+  background-color: #EEEFEF;
+  width: 100%;
+  height: 50px;
+  text-align: center;
+  border-radius: 25px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 .back{
-  position: absolute;
-  top: 0;
-  left: 10px;
+  position: relative;
+  /* top: 0; */
+  /* left: 10px; */
 }
 /*Selection div*/
 .select-description{
+  /* position: relative;
+  top: 50px; */
 }
 .select-container{
   text-align: center;
+  position: relative;
+  top: 20px;
 }
 .select-container span{
   font-size: 25px;
