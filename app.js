@@ -176,7 +176,6 @@ function dbConnection() {
       user: process.env.DB_ADMIN_USER,
       password: process.env.DB_ADMIN_PASSWORD,
       database: process.env.DB_ADMIN_DATABASE
-
     })
   con.connect(function (err) {
     if (err) throw err;
