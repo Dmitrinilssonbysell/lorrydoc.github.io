@@ -4,18 +4,26 @@ body {
 }
 /*Main div/Top div*/
 .lorrydoc-main{
-  background-color: orange;
+  background-color: D8E0E7;
   height: 100%;
 }
 /*Welcome*/
 .lorrydoc-welcome-container{
-  text-align: center;
-  background-color: grey;
-  height: 75px;
+  background-image: url(images/lorry-purple.jpeg);
+  padding: 5px;
+  height: 125px;
 }
 .lorrydoc-welcome-container h3{
-  position: absolute;
-  top: 25px;
+  position: relative;
+  top: 125px;
+  background-color: #EEEFEF;
+  width: 100%;
+  /* height: 70px; */
+  text-align: center;
+  border-radius: 25px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: 40px;
+  padding-top: 6px; 
 }
 .back{
   position: absolute;
@@ -57,15 +65,16 @@ body {
 }
 /*Login*/
 .login-container{
-  margin-top: 25px;
+  margin-top: 85px;
 }
 .login-container input[type=email], .login-container input[type=password]{
-  width: 60%;
+  width: 80%;
   background: transparent;
   border: none;
   border-bottom: 1px solid black;
   font-size: 20px;
   outline: none;
+  
 }
 .login-container label{
   display: inline-block;
@@ -74,17 +83,24 @@ body {
   font-size: 20px;
 }
 .login-container input[type=submit]{
-  position: absolute;
+  position: relative;
   width: 100px;
   background-color: lightgrey;
   border: none;
   right:0;
-  top: 175px;
+  left: 120px;
+  top: 75px;
 }
 
-/*Register*/
+/*Register page*/
+.already-member-button {
+  text-decoration: underline;
+  font-size: smaller;
+
+}
 .register-container{
-  margin-top: 25px;
+  margin-top: 75px;
+  margin-left: 15px;
 }
 .register-container input[type=text], .register-container input[type=password],  .register-container input[type=email]{
   width: 90%;
@@ -95,16 +111,29 @@ body {
   border-bottom: 1px solid black;
   border-left: 1px solid black;
   font-size: 20px;
-  margin-top: 5px;
+  margin-top: 15px;
   outline: none;
   right: 0;
 }
-
 .register-container input[type=submit]{
-  position: absolute;
+  position: relative;
   width: 100px;
-  height: 25px;
   background-color: lightgrey;
   border: none;
   right:0;
+  left: 130px;
+  top: 220px;
+}
+
+.login-register-button {
+  text-decoration: underline;
+  margin-left: 20px;
+}
+
+footer {
+  background-color: lightgrey;
+  height: 100px;
+  text-align: justify;
+  color: rgba(65, 62, 62, 0.753);
+  padding: 20px;
 }

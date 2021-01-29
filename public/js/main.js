@@ -229,13 +229,13 @@ function loadLogin(){
 
 
   loginEmailInput.setAttribute("type", "email");
-  loginEmailInput.setAttribute("placeholder", "Enter Email!");
+  loginEmailInput.setAttribute("placeholder", "Enter Email");
   loginEmailInput.setAttribute("id", "login_email");
   loginEmailInput.classList.add("login-email-input");
   loginEmailLabel.textContent = "Email - ";
 
   loginPasswordInput.setAttribute("type", "password");
-  loginPasswordInput.setAttribute("placeholder", "Enter Password!");
+  loginPasswordInput.setAttribute("placeholder", "Enter Password");
   loginPasswordInput.setAttribute("id", "login_password");
   loginPasswordInput.classList.add("login-password-input");
   loginPasswordLabel.textContent = "Password - ";
@@ -297,23 +297,23 @@ function loadRegister(){
   registerLastNameInput.classList.add("register-last-name-input");
 
   registerEmailInput.setAttribute("type", "email");
-  registerEmailInput.setAttribute("placeholder", "Enter Email!");
+  registerEmailInput.setAttribute("placeholder", "Enter Email");
   registerEmailInput.setAttribute("id", "reg_email");
   registerEmailInput.setAttribute("name", "reg_email");
   registerEmailInput.classList.add("register-email-input");
 
   registerPasswordInput.setAttribute("type", "password");
-  registerPasswordInput.setAttribute("placeholder", "Enter Password!");
+  registerPasswordInput.setAttribute("placeholder", "Enter Password");
   registerPasswordInput.setAttribute("id", "reg_password");
   registerPasswordInput.setAttribute("name", "reg_pwd");
   registerPasswordInput.classList.add("register-password-input");
 
   registerRePasswordInput.setAttribute("type", "password");
-  registerRePasswordInput.setAttribute("placeholder", "Enter Password again!");
+  registerRePasswordInput.setAttribute("placeholder", "Enter Password again");
   registerRePasswordInput.classList.add("register-password-input");
 
   registerAmBtn.setAttribute("class", "already-member-button");
-  registerAmBtn.textContent = "Already a member";
+  registerAmBtn.textContent = "Already a member?";
 
   registerSubmitBtn.setAttribute("class", "register-submit-button");
   registerSubmitBtn.setAttribute("type", "submit");
