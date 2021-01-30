@@ -14,10 +14,6 @@ const lorryDocWelcome = lorryDocMain.querySelector(".lorrydoc-welcome-container"
 const lorryDocContainer = lorryDocMain.querySelector(".lorrydoc-container");
 const lorryDocSolutionCont = lorryDocMain.querySelector(".lorrydoc-selected-container");
 
-/*Array for selection*/
-const brandSelectionArr = ["Volvo", "Scania", "Renault"];
-const problemSelectionArr = ["wheels", "engine", "Other"];
-
 /*Variable for Objects*/
 //Brand = manufacturer
 var brandObject;
@@ -25,7 +21,6 @@ var problemObject;
 var solutionObject;
 
 /*Variable value given after every process part*/
-var selectedManufacturer;
 var selectedProblem;
 
 /*Variable value change after every step in process*/
@@ -37,8 +32,30 @@ var solutionSelected = 0;
 
 //Window onload
 window.onload = function() {
+  initSelects(1);
   onPageLoad();
+}
 
+function initSelects(val){
+  //Val = inits
+
+  switch(val){
+    case 1:
+      $.getBrand(function(retVal){
+        let brandSelectionArr = retVal;
+        brandObject = new loadSelectBrand(brandSelectionArr);
+      });
+      break;
+    case 2:
+      $.getProblem(function(retVal){
+        let problemSelectionArr = retVal;
+        problemObject = new loadSelectProblem(problemSelectionArr);
+        if(retVal.length > 0){
+          problemObject.buildProblemSelect();
+        }
+      });
+      break;
+  }
 }
 //when page is loaded val == loggedin;
 function onPageLoad(){
@@ -59,8 +76,6 @@ function onPageLoad(){
     }
   });
 
-  brandObject = new loadSelectBrand(brandSelectionArr);
-  problemObject = new loadSelectProblem(problemSelectionArr);
   solutionObject = new loadSolution(selectedProblem);
 
 
@@ -83,13 +98,11 @@ function onPageLoad(){
 
 
 
-function loadSelectBrand(brandSelectionArr){
+function loadSelectBrand(brandSelection){
   //Create all required elements
   this.brandDiv = document.createElement("div");
   this.brandSelectElem = document.createElement("select");
   this.selectDesc =  document.createElement("span");
-
-  this.brandSelectionArr = brandSelectionArr;
 
   //Create back button
   this.backSpan = document.createElement("span");
@@ -108,9 +121,10 @@ function loadSelectBrand(brandSelectionArr){
       this.selectOption = document.createElement("option");
       this.selectOption.textContent = "Select manufacturer";
       this.brandSelectElem.append(this.selectOption);
-      for(i = 0; i < this.brandSelectionArr.length; i++){ //Select option for-loop
+      for(i = 0; i < brandSelection.length; i++){ //Select option for-loop
         this.selectOption = document.createElement("option");
-        this.selectOption.textContent = this.brandSelectionArr[i];
+        this.selectOption.setAttribute("id", brandSelection[i].brand_id);
+        this.selectOption.textContent = brandSelection[i].brand_name;
 
         this.brandSelectElem.append(this.selectOption);
       }
@@ -131,20 +145,20 @@ function loadSelectBrand(brandSelectionArr){
   this.brandSelectElem.onchange = function(){ //On brand selected
     if(brandObject.brandSelectElem.value != "Select manufacturer"){
 
-      selectedManufacturer = brandObject.brandSelectElem.value;
+      let selectedManufacturer = brandObject.brandSelectElem.value;
+      let id = $(this).children(":selected").attr("id");
 
-      solutionObject.selectedBrand(selectedManufacturer);
+      solutionObject.selectedBrand(selectedManufacturer, id);
       brandObject.hideBrandDiv();
-      problemObject.buildProblemSelect();
+      initSelects(2, $(this).children(":selected").attr("id"));
     }
   }
 }
 
-function loadSelectProblem(problemSelectionArr){
+function loadSelectProblem(problemSelection){
   this.problemDiv = document.createElement("div");
   this.problemSelectElem = document.createElement("select");
   this.selectDesc = document.createElement("span");
-  this.problemSelectionArr = problemSelectionArr;
 
   this.buildProblemSelect = function(){
     this.problemDiv.setAttribute("class", "select-container");
@@ -158,9 +172,10 @@ function loadSelectProblem(problemSelectionArr){
       this.selectOption = document.createElement("option");
       this.selectOption.textContent = "Select Problem";
       this.problemSelectElem.append(this.selectOption);
-      for (i = 0; i < 3; i++) { //Select option for-loop
+      for (i = 0; i < problemSelection.length; i++) { //Select option for-loop
         this.selectOption = document.createElement("option");
-        this.selectOption.textContent = this.problemSelectionArr[i];
+        this.selectOption.setAttribute("id", problemSelection[i].problem_id);
+        this.selectOption.textContent = problemSelection[i].problem_str;
 
         this.problemSelectElem.append(this.selectOption);
       }
@@ -188,11 +203,13 @@ function loadSelectProblem(problemSelectionArr){
 
 function loadSolution(){
 
-  this.selectedBrand = function(manuVal){
+  this.selectedBrand = function(manuVal, id){
     this.selectedBrandDiv = document.createElement("div");
     this.selectedBrandDiv.setAttribute("class", "selected-brand-div");
     this.selectedBrandSpan = document.createElement("span");
     this.selectedBrandSpan.setAttribute("class", "selected-brand");
+    this.selectedBrandSpan.dataset.id = id;
+    this.selectedBrandSpan.dataset.brand = manuVal;
     this.selectedBrandSpan.textContent = "Manufacturer: " + manuVal;
 
     this.selectedBrandDiv.append(this.selectedBrandSpan);
@@ -229,13 +246,13 @@ function loadLogin(){
 
 
   loginEmailInput.setAttribute("type", "email");
-  loginEmailInput.setAttribute("placeholder", "Enter Email");
+  loginEmailInput.setAttribute("placeholder", "Enter Email!");
   loginEmailInput.setAttribute("id", "login_email");
   loginEmailInput.classList.add("login-email-input");
   loginEmailLabel.textContent = "Email - ";
 
   loginPasswordInput.setAttribute("type", "password");
-  loginPasswordInput.setAttribute("placeholder", "Enter Password");
+  loginPasswordInput.setAttribute("placeholder", "Enter Password!");
   loginPasswordInput.setAttribute("id", "login_password");
   loginPasswordInput.classList.add("login-password-input");
   loginPasswordLabel.textContent = "Password - ";
@@ -263,8 +280,7 @@ function loadLogin(){
   }
 
   loginRegisterBtn.onclick  = function(){//Sign up click
-    loginRow.remove();
-    loadRegister();
+    toggleLoginRegisterForm();
   }
 }
 
@@ -297,23 +313,23 @@ function loadRegister(){
   registerLastNameInput.classList.add("register-last-name-input");
 
   registerEmailInput.setAttribute("type", "email");
-  registerEmailInput.setAttribute("placeholder", "Enter Email");
+  registerEmailInput.setAttribute("placeholder", "Enter Email!");
   registerEmailInput.setAttribute("id", "reg_email");
   registerEmailInput.setAttribute("name", "reg_email");
   registerEmailInput.classList.add("register-email-input");
 
   registerPasswordInput.setAttribute("type", "password");
-  registerPasswordInput.setAttribute("placeholder", "Enter Password");
+  registerPasswordInput.setAttribute("placeholder", "Enter Password!");
   registerPasswordInput.setAttribute("id", "reg_password");
   registerPasswordInput.setAttribute("name", "reg_pwd");
   registerPasswordInput.classList.add("register-password-input");
 
   registerRePasswordInput.setAttribute("type", "password");
-  registerRePasswordInput.setAttribute("placeholder", "Enter Password again");
+  registerRePasswordInput.setAttribute("placeholder", "Enter Password again!");
   registerRePasswordInput.classList.add("register-password-input");
 
   registerAmBtn.setAttribute("class", "already-member-button");
-  registerAmBtn.textContent = "Already a member?";
+  registerAmBtn.textContent = "Already a member";
 
   registerSubmitBtn.setAttribute("class", "register-submit-button");
   registerSubmitBtn.setAttribute("type", "submit");
@@ -337,12 +353,12 @@ function loadRegister(){
   };
 
   registerAmBtn.onclick = function(){
-    registerRow.remove();
-    loadLogin();
+    toggleLoginRegisterForm();
   }
 }
 
 function regUser(e){
+  e.preventDefault();
   let email = document.getElementsByClassName("register-email-input")[0].value;
   let password = document.getElementsByClassName("register-password-input")[0].value;
   let password2 = document.getElementsByClassName("register-password-input")[1].value;
@@ -352,90 +368,97 @@ function regUser(e){
   var errors = {}; //Register error
   let minPassLength = 8; //For password check
 
-  //Check if mail is already registered
-  $.usrEmailCheck(function(retVal){
-    console.log(retVal.length);
-    if(retVal.length > 0 && email.length <= 0){
-      errors.emailIsFree = false;
-    }
-    else if(retVal.length <= 0 && email.length > 0){
-      errors.emailIsFree = true;
-    }
-  });
+  //Compare email
+    data = "&reg_email=" + $('#reg_email').val();
+    $.ajax({
+      url: "http://127.0.0.1:1337/checkEmail",
+      type: "POST",
+      data: data,
+      dataType: 'json',
+      success: function (xdata) {
+        if(xdata.length > 0){
+          errors.emailIsFree = false;
+        }
+        else{
+          errors.emailIsFree = true;
+        }
+      },
+      error: function (xdata) {
+        console.log("ERROR");
+      }
+    });
 
-  var validateCheck = {
-    validateEmail: function(email){
-      let re = /\S+@\S+\.\S+/;
-      if(re.test(email) == true && email.length > 0){
-        errors.emailIsValid = true;
-      }else if(re.test(email) == false || email.length <= 0){
-        errors.emailIsValid = false;
-      }
-    },
-    validateName: function(firstName, lastName){
-      let nameChars = /^[A-Za-z]+$/;
-      //name.val().match(nameChars);
-      if(firstName.match(nameChars) == null){
-        errors.firstNameIsValid = false;
-      }
-      else if(firstName.match(nameChars).length > 0){
-        errors.firstNameIsValid = true;
-      }
-      if(lastName.match(nameChars) == null){
-        errors.lastNameIsValid = false;
-      }
-      else if(lastName.match(nameChars) == null > 0){
-        errors.firstNameIsValid = true;
-      }
-    },
-    validatePassword: function(password){
+  setTimeout(function(){
+    var validateCheck = {
+      validateEmail: function(email){
+        let re = /\S+@\S+\.\S+/;
 
-      if(password.length < minPassLength){
-        errors.passwordIsValid = false;
-      }
-      else if(password.length >= minPassLength){
-        errors.passwordIsValid = true;
-      }
-    },
-    validatePassMatch: function(password, password2){
-      if(password === password2 && password.length > 0){
-        errors.passwordsMatch = true;
-      }
-      else if(password !== password2){
-        errors.passwordsMatch = false;
-      }
-    },
-    checkValidation: function(e){
-      if(Object.keys(errors).every(function(k){ return errors[k]}) === true){
+        if(re.test(email) == true && email.length > 0){
+          errors.emailIsValid = true;
+        }else if(re.test(email) == false || email.length <= 0){
+          errors.emailIsValid = false;
+        }
+      },
+      validateName: function(firstName, lastName){
+        let nameChars = /^[A-Za-z]+$/;
+        //name.val().match(nameChars);
+        if(firstName.match(nameChars) == null){
+          errors.firstNameIsValid = false;
+        }
+        else if(firstName.match(nameChars).length > 0){
+          errors.firstNameIsValid = true;
+        }
+        if(lastName.match(nameChars) == null){
+          errors.lastNameIsValid = false;
+        }
+        else if(lastName.match(nameChars) == null > 0){
+          errors.firstNameIsValid = true;
+        }
+      },
+      validatePassword: function(password){
+
+        if(password.length < minPassLength){
+          errors.passwordIsValid = false;
+        }
+        else if(password.length >= minPassLength){
+          errors.passwordIsValid = true;
+        }
+      },
+      validatePassMatch: function(password, password2){
+        if(password === password2 && password.length > 0){
+          errors.passwordsMatch = true;
+        }
+        else if(password !== password2){
+          errors.passwordsMatch = false;
+        }
+      },
+      checkValidation: function(){
+        if(Object.keys(errors).every(function(k){ return errors[k]}) === true){
           $.doSave();
-          e.preventDefault();
-      }
-      else if(Object.keys(errors).every(function(k){ return errors[k]}) === false){
-        e.preventDefault();
-        console.log("Something has not been filled correctly");
+          toggleLoginRegisterForm();
+        }
+        else if(Object.keys(errors).every(function(k){ return errors[k]}) === false){
+          console.log("NOT FILLED OUT CORRECTLY");
+        }
       }
     }
-  }
 
-  //Check email is actual email
-  validateCheck.validateEmail(email);
-  //Check Name is actual name without special chars
-  validateCheck.validateName(firstName, lastName);
+    //Check email is actual email
+    validateCheck.validateEmail(email);
 
-  //Check passwords match
-  validateCheck.validatePassword(password, minPassLength);
-  validateCheck.validatePassMatch(password, password2);
+    //Check Name is actual name without special chars
+    validateCheck.validateName(firstName, lastName);
 
-  validateCheck.checkValidation();
-  //If correct add a check
+    //Check passwords match
+    validateCheck.validatePassword(password, minPassLength);
+    validateCheck.validatePassMatch(password, password2);
 
-  //If incorrect add a cross
-
+    validateCheck.checkValidation();
+  },200);
 
 }
 
 //Create login
-
 function loginUser(e){
   let email = document.getElementsByClassName("login-email-input")[0].value;
   let password = document.getElementsByClassName("login-password-input")[0].value;
@@ -462,9 +485,20 @@ function loginUser(e){
     }
   });
 }
-//Check if email and hashed pwd match in DB
 
+function toggleLoginRegisterForm(){
+  let registerContainerRow = document.querySelector(".register-row");
+  let loginContainerRow = document.querySelector(".login-row");
 
+  if(registerContainerRow == null){
+    loginContainerRow.remove();
+    loadRegister();
+  }
+  else if(loginContainerRow == null){
+    registerContainerRow.remove();
+    loadLogin();
+  }
+}
 
 var resetSite = {
   reset : function(){

@@ -25,6 +25,7 @@ app.use(session({
   secret: process.env.SESS_SECRET,
   cookie:{maxAge:600000}
 }));
+var sess;
 
 //Get add ajax req
 app.post('/add', function(req,res){
@@ -78,7 +79,6 @@ app.post('/checkEmail', function(req,res){
   //data.reg_password
 
   dbCheckEmail(data,res);
-
 })
 
 //Register Check Email
@@ -116,7 +116,7 @@ app.post('/login', function(req,res){
 
 //Login
 function dbLogin(data,res,req){
-  var sess = req.session;
+  sess = req.session;
   var connectionObject = dbConnection();
 
   let safePwdCheck = hash(data.login_password);
@@ -144,7 +144,9 @@ function dbLogin(data,res,req){
 //Check logged in
 app.get('/checkLoggedIn', function(req, res){
   var connectionObject = dbConnection();//Establish connection
+  sess = req.session;
   let customerId = req.session.custId; //Customer id from login phase
+  console.log(req.session.brand);
 
   if(customerId == null){ //If customer id = null
 
@@ -167,6 +169,55 @@ app.get('/checkLoggedIn', function(req, res){
   connectionObject.end();
 })
 
+app.post('/getBrands', function(req, res){
+  var connectionObject = dbConnection();//Establish connection
+  sess = req.session;
+  //Sql to get all other needed data
+  let sql = "SELECT * FROM brand";
+  connectionObject.query(sql, function (err, result) { //Execute sql
+    if (err) {
+      var error = error + 1;
+      var status_code = 404;
+      var error_message = "Sorry data could not be entered something is wrong in the sql query syntax";
+      console.log("error in the sql query" + status_code);
+    }
+    else {
+      return res.send(result);
+    }
+  })
+
+  connectionObject.end();
+})
+
+app.post('/getProblem', function(req, res){
+  var connectionObject = dbConnection();//Establish connection
+  sess = req.session;
+
+  var data = req.body;
+
+  //Sql to get all other needed data
+
+  let querydata = data.brand_id;
+
+  let sql = "SELECT problem_id, problem_str FROM problem WHERE brand_id = ?";
+  connectionObject.query(sql, [querydata], function (err, result) { //Execute sql
+    if (err) {
+      var error = error + 1;
+      var status_code = 404;
+      var error_message = "Sorry data could not be entered something is wrong in the sql query syntax";
+      console.log("error in the sql query" + status_code);
+    }
+    else {
+      req.session.brand = data.brand_name;
+      return res.send(result);
+    }
+  })
+
+  connectionObject.end();
+})
+
+
+
 
 //Conn to db
 function dbConnection() {
@@ -176,6 +227,7 @@ function dbConnection() {
       user: process.env.DB_ADMIN_USER,
       password: process.env.DB_ADMIN_PASSWORD,
       database: process.env.DB_ADMIN_DATABASE
+
     })
   con.connect(function (err) {
     if (err) throw err;

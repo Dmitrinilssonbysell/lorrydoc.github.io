@@ -1,0 +1,9 @@
+Build register as a function where you get to know what is wrong and it's more efficient
+
+Build login where you get to know whats wrong and it's more efficient
+
+Build select for Problem and Brand where it checks for already selected problem and brand in nodejs session and puts the value as main in the case of refresh
+
+Fix up Main.js file
+
+Fix up app.js file
