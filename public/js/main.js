@@ -263,8 +263,7 @@ function loadLogin(){
   }
 
   loginRegisterBtn.onclick  = function(){//Sign up click
-    loginRow.remove();
-    loadRegister();
+    toggleLoginRegisterForm();
   }
 }
 
@@ -337,12 +336,12 @@ function loadRegister(){
   };
 
   registerAmBtn.onclick = function(){
-    registerRow.remove();
-    loadLogin();
+    toggleLoginRegisterForm();
   }
 }
 
 function regUser(e){
+  e.preventDefault();
   let email = document.getElementsByClassName("register-email-input")[0].value;
   let password = document.getElementsByClassName("register-password-input")[0].value;
   let password2 = document.getElementsByClassName("register-password-input")[1].value;
@@ -352,89 +351,97 @@ function regUser(e){
   var errors = {}; //Register error
   let minPassLength = 8; //For password check
 
-  //Check if mail is already registered
-  $.usrEmailCheck(function(retVal){
-    console.log(retVal.length);
-    if(retVal.length > 0 && email.length <= 0){
-      errors.emailIsFree = false;
+  //Compare email
+    data = "&reg_email=" + $('#reg_email').val();
+    $.ajax({
+      url: "http://127.0.0.1:1337/checkEmail",
+      type: "POST",
+      data: data,
+      dataType: 'json',
+      success: function (xdata) {
+        if(xdata.length > 0){
+          errors.emailIsFree = false;
+        }
+        else{
+          errors.emailIsFree = true;
+        }
+      },
+      error: function (xdata) {
+        console.log("ERROR");
+      }
+    });
+
+  setTimeout(function(){
+    var validateCheck = {
+      validateEmail: function(email){
+        let re = /\S+@\S+\.\S+/;
+
+        if(re.test(email) == true && email.length > 0){
+          errors.emailIsValid = true;
+        }else if(re.test(email) == false || email.length <= 0){
+          errors.emailIsValid = false;
+        }
+      },
+      validateName: function(firstName, lastName){
+        let nameChars = /^[A-Za-z]+$/;
+        //name.val().match(nameChars);
+        if(firstName.match(nameChars) == null){
+          errors.firstNameIsValid = false;
+        }
+        else if(firstName.match(nameChars).length > 0){
+          errors.firstNameIsValid = true;
+        }
+        if(lastName.match(nameChars) == null){
+          errors.lastNameIsValid = false;
+        }
+        else if(lastName.match(nameChars) == null > 0){
+          errors.firstNameIsValid = true;
+        }
+      },
+      validatePassword: function(password){
+
+        if(password.length < minPassLength){
+          errors.passwordIsValid = false;
+        }
+        else if(password.length >= minPassLength){
+          errors.passwordIsValid = true;
+        }
+      },
+      validatePassMatch: function(password, password2){
+        if(password === password2 && password.length > 0){
+          errors.passwordsMatch = true;
+        }
+        else if(password !== password2){
+          errors.passwordsMatch = false;
+        }
+      },
+      checkValidation: function(){
+        if(Object.keys(errors).every(function(k){ return errors[k]}) === true){
+          $.doSave();
+          toggleLoginRegisterForm();
+        }
+        else if(Object.keys(errors).every(function(k){ return errors[k]}) === false){
+          console.log("NOT FILLED OUT CORRECTLY");
+        }
+      }
     }
-    else if(retVal.length <= 0 && email.length > 0){
-      errors.emailIsFree = true;
-    }
-  });
 
-  var validateCheck = {
-    validateEmail: function(email){
-      let re = /\S+@\S+\.\S+/;
-      if(re.test(email) == true && email.length > 0){
-        errors.emailIsValid = true;
-      }else if(re.test(email) == false || email.length <= 0){
-        errors.emailIsValid = false;
-      }
-    },
-    validateName: function(firstName, lastName){
-      let nameChars = /^[A-Za-z]+$/;
-      //name.val().match(nameChars);
-      if(firstName.match(nameChars) == null){
-        errors.firstNameIsValid = false;
-      }
-      else if(firstName.match(nameChars).length > 0){
-        errors.firstNameIsValid = true;
-      }
-      if(lastName.match(nameChars) == null){
-        errors.lastNameIsValid = false;
-      }
-      else if(lastName.match(nameChars) == null > 0){
-        errors.firstNameIsValid = true;
-      }
-    },
-    validatePassword: function(password){
+    //Check email is actual email
+    validateCheck.validateEmail(email);
 
-      if(password.length < minPassLength){
-        errors.passwordIsValid = false;
-      }
-      else if(password.length >= minPassLength){
-        errors.passwordIsValid = true;
-      }
-    },
-    validatePassMatch: function(password, password2){
-      if(password === password2 && password.length > 0){
-        errors.passwordsMatch = true;
-      }
-      else if(password !== password2){
-        errors.passwordsMatch = false;
-      }
-    },
-    checkValidation: function(){
-      if(Object.keys(errors).every(function(k){ return errors[k]}) === true){
-        $.doSave();
-      }
-      else if(Object.keys(errors).every(function(k){ return errors[k]}) === false){
-        e.preventDefault();
-        console.log("Something has not been filled correctly");
-      }
-    }
-  }
+    //Check Name is actual name without special chars
+    validateCheck.validateName(firstName, lastName);
 
-  //Check email is actual email
-  validateCheck.validateEmail(email);
-  //Check Name is actual name without special chars
-  validateCheck.validateName(firstName, lastName);
+    //Check passwords match
+    validateCheck.validatePassword(password, minPassLength);
+    validateCheck.validatePassMatch(password, password2);
 
-  //Check passwords match
-  validateCheck.validatePassword(password, minPassLength);
-  validateCheck.validatePassMatch(password, password2);
-
-  validateCheck.checkValidation();
-  //If correct add a check
-
-  //If incorrect add a cross
-
+    validateCheck.checkValidation();
+  },200);
 
 }
 
 //Create login
-
 function loginUser(e){
   let email = document.getElementsByClassName("login-email-input")[0].value;
   let password = document.getElementsByClassName("login-password-input")[0].value;
@@ -461,7 +468,20 @@ function loginUser(e){
     }
   });
 }
-//Check if email and hashed pwd match in DB
+
+function toggleLoginRegisterForm(){
+  let registerContainerRow = document.querySelector(".register-row");
+  let loginContainerRow = document.querySelector(".login-row");
+
+  if(registerContainerRow == null){
+    loginContainerRow.remove();
+    loadRegister();
+  }
+  else if(loginContainerRow == null){
+    registerContainerRow.remove();
+    loadLogin();
+  }
+}
 
 var resetSite = {
   reset : function(){

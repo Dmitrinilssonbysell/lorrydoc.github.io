@@ -78,7 +78,6 @@ app.post('/checkEmail', function(req,res){
   //data.reg_password
 
   dbCheckEmail(data,res);
-
 })
 
 //Register Check Email

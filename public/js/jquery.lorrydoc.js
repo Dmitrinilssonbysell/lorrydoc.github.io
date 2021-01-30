@@ -15,24 +15,6 @@ $.extend({
       if(typeof callbackFnk === 'function') callbackFnk.call(this,0);
     });
   },
-  usrEmailCheck:function(callbackFnk){
-    data = "&reg_email=" + $('#reg_email').val();
-
-    var request = $.ajax({
-      url: "http://127.0.0.1:1337/checkEmail",
-      type: "POST",
-      data: data,
-      dataType: 'json',
-    });
-
-    request.done(function( msg ) {
-      if(typeof callbackFnk === 'function') callbackFnk.call(this,msg);
-    });
-
-    request.fail(function(jqXHR,textStatus,errorThrown) {
-      if(typeof callbackFnk === 'function') callbackFnk.call(this,0);
-    });
-  },
   doSave: function(){
     data = "reg_first_name=" + $('#reg_first_name').val() + "&reg_last_name=" + $('#reg_last_name').val() + "&reg_email=" + $('#reg_email').val() + "&reg_password=" + $("#reg_password").val();
 
