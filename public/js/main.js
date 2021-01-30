@@ -405,9 +405,10 @@ function regUser(e){
         errors.passwordsMatch = false;
       }
     },
-    checkValidation: function(){
+    checkValidation: function(e){
       if(Object.keys(errors).every(function(k){ return errors[k]}) === true){
-        $.doSave();
+          $.doSave();
+          e.preventDefault();
       }
       else if(Object.keys(errors).every(function(k){ return errors[k]}) === false){
         e.preventDefault();
@@ -462,6 +463,8 @@ function loginUser(e){
   });
 }
 //Check if email and hashed pwd match in DB
+
+
 
 var resetSite = {
   reset : function(){
