@@ -4,7 +4,7 @@ body {
 }
 /*Main div/Top div*/
 .lorrydoc-main{
-  background-color: #D8E0E7;
+  background-color: #ffffff;
   height: 86.5%;
 }
 /*Welcome*/
@@ -12,10 +12,11 @@ body {
     background-image: url(images/lorry-purple.jpeg);
     padding: 20vw;
     margin-left: 0vw;
+    height: 70px;
 }
 .lorrydoc-welcome-container h3{
   position: relative;
-  top: 20px;
+  /* top: 10px; */
   background-color: #EEEFEF;
   width: 100%;
   /* height: 70px; */
@@ -65,14 +66,14 @@ padding-top: 6px;
 }
 /*Login*/
 .login-container{
-  margin-top: 85px;
+  margin-top: 25px;
 }
 .login-container input[type=submit]{
   position: relative;
   width: 100px;
   background-color: lightgrey;
   border: none;
-  right:0px;
+  margin-right: 15px;
 }
 .login-container input[type=password],
 .login-container input[type=email]{
@@ -84,7 +85,7 @@ padding-top: 6px;
   border-bottom: 1px solid black;
   border-left: 1px solid black;
   font-size: 20px;
-  margin-top: 15px;
+  margin: 15px;
   outline: none;
   right: 0;
 }
@@ -100,8 +101,8 @@ padding-top: 6px;
 
 }
 .register-container{
-  margin-top: 75px;
-  margin-left: 15px;
+  /* margin-top: 75px; */
+  margin: 15px;
 }
 .register-container input[type=text],
 .register-container input[type=password],
@@ -114,7 +115,7 @@ padding-top: 6px;
   border-bottom: 1px solid black;
   border-left: 1px solid black;
   font-size: 20px;
-  margin-top: 15px;
+  margin: 15px 15px 0px 15px;
   outline: none;
   right: 0;
 }
@@ -123,8 +124,11 @@ padding-top: 6px;
   width: 100px;
   background-color: lightgrey;
   border: none;
-  right:0;
-  left: 130px;
+  /* right: 0px; */
+  left: 110px;
+  /* margin-right: 15px;*/
+  margin-top: 15px; 
+
 }
 
 .reg-icon{
@@ -137,4 +141,5 @@ footer {
   text-align: justify;
   color: rgba(65, 62, 62, 0.753);
   padding: 20px;
+  font-size: smaller;
 }
