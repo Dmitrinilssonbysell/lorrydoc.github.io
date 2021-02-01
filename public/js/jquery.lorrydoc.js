@@ -388,12 +388,12 @@ $.extend({
 
 
     loginEmailInput.setAttribute("type", "email");
-    loginEmailInput.setAttribute("placeholder", "Enter Email!");
+    loginEmailInput.setAttribute("placeholder", "Enter Email");
     loginEmailInput.setAttribute("id", "login_email");
     loginEmailInput.classList.add("login-email-input");
 
     loginPasswordInput.setAttribute("type", "password");
-    loginPasswordInput.setAttribute("placeholder", "Enter Password!");
+    loginPasswordInput.setAttribute("placeholder", "Enter Password");
     loginPasswordInput.setAttribute("id", "login_password");
     loginPasswordInput.classList.add("login-password-input");
 
