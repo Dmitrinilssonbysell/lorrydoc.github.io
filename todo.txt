@@ -7,3 +7,7 @@ Build select for Problem and Brand where it checks for already selected problem 
 Fix up Main.js file
 
 Fix up app.js file
+
+AJAX request with retVal of all session stored variables
+
+On register since not HTTPS send email to database and compare if exist

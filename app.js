@@ -78,17 +78,10 @@ app.post('/checkEmail', function(req,res){
   //data.reg_email
   //data.reg_password
 
-  dbCheckEmail(data,res);
-})
-
-//Register Check Email
-function dbCheckEmail(data,res){
   var connectionObject = dbConnection();
 
-  let userdata =  data.reg_email;
-
-  let sql = "SELECT customer_email FROM customer WHERE customer_email = ?";
-  connectionObject.query(sql, [userdata], function (err, result) {
+  let sql = "SELECT COUNT(customer_id) AS emailCount FROM customer WHERE customer_email = ?";
+  connectionObject.query(sql, [data.reg_email], function (err, result) {
     if (err) {
       var error = error + 1;
       var status_code = 404;
@@ -96,12 +89,12 @@ function dbCheckEmail(data,res){
       console.log("error in the sql query" + status_code)
     }
     else{
+      console.log(result);
       return res.send(result);
     }
   })
-
   connectionObject.end();
-}
+})
 
 //get login Ajax request
 app.post('/login', function(req,res){
@@ -132,8 +125,9 @@ function dbLogin(data,res,req){
       console.log("error in the sql query" + status_code);
     }
     else {
-      req.session.custId = result[0].customer_id;
-
+      if(result.length > 0){
+        req.session.custId = result[0].customer_id;
+      }
       return res.send(result);
     }
   })
@@ -146,7 +140,6 @@ app.get('/checkLoggedIn', function(req, res){
   var connectionObject = dbConnection();//Establish connection
   sess = req.session;
   let customerId = req.session.custId; //Customer id from login phase
-  console.log(req.session.brand);
 
   if(customerId == null){ //If customer id = null
 
@@ -172,6 +165,11 @@ app.get('/checkLoggedIn', function(req, res){
 app.post('/getBrands', function(req, res){
   var connectionObject = dbConnection();//Establish connection
   sess = req.session;
+  console.log("Hereadas");
+  if(req.session.brand_name != undefined){
+    //If brand exist in session
+  }
+
   //Sql to get all other needed data
   let sql = "SELECT * FROM brand";
   connectionObject.query(sql, function (err, result) { //Execute sql
@@ -195,6 +193,10 @@ app.post('/getProblem', function(req, res){
 
   var data = req.body;
 
+  //Add Brand to session
+  req.session.brand_name = data.brand_name;
+  req.session.brand_id = data.brand_id;
+
   //Sql to get all other needed data
 
   let querydata = data.brand_id;
@@ -208,13 +210,32 @@ app.post('/getProblem', function(req, res){
       console.log("error in the sql query" + status_code);
     }
     else {
-      req.session.brand = data.brand_name;
+
       return res.send(result);
     }
   })
 
   connectionObject.end();
 })
+
+app.get('/getSelected', function(req,res){
+  sess = req.session;
+  req.session.reload(function(err) {
+    let fullSessVal = {
+      brand_name: req.session.brand_name,
+      brand_id: req.session.brand_id,
+      custId: req.session.custId
+    }
+
+    let selectedVal = {
+      brand_name: req.session.brand_name,
+      brand_id: req.session.brand_id
+    }
+
+    return res.send(selectedVal);
+  })
+  })
+
 
 
 

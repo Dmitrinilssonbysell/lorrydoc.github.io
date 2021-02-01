@@ -8,12 +8,6 @@ body {
   height: 86.5%;
 }
 /*Welcome*/
-/*.lorrydoc-welcome-container {
-    background-image: url(images/lorry-purple.jpeg);
-    padding: 5px;
-    height: 125px;
-    margin-left: 20vw;
-}*/
 #image_lorry {
     background-image: url(images/lorry-purple.jpeg);
     padding: 20vw;
@@ -73,29 +67,30 @@ padding-top: 6px;
 .login-container{
   margin-top: 85px;
 }
-.login-container input[type=email], .login-container input[type=password]{
-  width: 80%;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid black;
-  font-size: 20px;
-  outline: none;
-  
-}
-.login-container label{
-  display: inline-block;
-  width: 120px;
-  text-align: right;
-  font-size: 20px;
-}
 .login-container input[type=submit]{
   position: relative;
   width: 100px;
   background-color: lightgrey;
   border: none;
-  right:0;
-  left: 120px;
-  top: 75px;
+  right:0px;
+}
+.login-container input[type=password],
+.login-container input[type=email]{
+  width: 90%;
+  background: transparent;
+  float: right;
+  clear: left;
+  border: none;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  font-size: 20px;
+  margin-top: 15px;
+  outline: none;
+  right: 0;
+}
+.sign-up-button {
+  position: relative;
+  text-decoration: underline;
 }
 
 /*Register page*/
@@ -108,7 +103,9 @@ padding-top: 6px;
   margin-top: 75px;
   margin-left: 15px;
 }
-.register-container input[type=text], .register-container input[type=password],  .register-container input[type=email]{
+.register-container input[type=text],
+.register-container input[type=password],
+.register-container input[type=email]{
   width: 90%;
   background: transparent;
   float: right;
@@ -128,12 +125,10 @@ padding-top: 6px;
   border: none;
   right:0;
   left: 130px;
-  top: 220px;
 }
 
-.login-register-button {
-  text-decoration: underline;
-  margin-left: 20px;
+.reg-icon{
+  position: absolute;
 }
 
 footer {
