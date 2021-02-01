@@ -646,6 +646,7 @@ $.extend({
   },
 
   selectBackFunc: function(typeNum){
+
     if(document.querySelectorAll(".back-button").length == 0){
       let backBtn = document.createElement("span");
       backBtn.classList.add("back-button");
@@ -656,8 +657,6 @@ $.extend({
     let buttonBack = document.querySelector(".back-button");
 
     buttonBack.onclick = function(e){
-      console.log(typeNum);
-
 
       $.ajax({
         url: "http://127.0.0.1:1337/getSelected",
@@ -665,14 +664,20 @@ $.extend({
         dataType: 'json',
         success: function (xdata) {
 
+          if(typeNum == 3 && $(".selected-problem-container").length <= 0){
+            --typeNum;
+          }
+
           let selectedVal = xdata;
           switch(typeNum){
             case 2:
               $(".select-container").remove();
               $.buildSelect(1, selectedVal);
+              $(".selected-brand-container").remove();
               break;
             case 3:
               $.buildSelect(2, selectedVal);
+              $(".selected-problem-container").remove();
               break;
             default:
               console.log(":)");
