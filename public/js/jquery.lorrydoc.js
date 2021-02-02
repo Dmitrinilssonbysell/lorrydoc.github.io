@@ -82,19 +82,19 @@ $.extend({
     registerLastNameInput.classList.add("register-last-name-input");
 
     registerEmailInput.setAttribute("type", "email");
-    registerEmailInput.setAttribute("placeholder", "Enter Email!");
+    registerEmailInput.setAttribute("placeholder", "Enter Email");
     registerEmailInput.setAttribute("id", "reg_email");
     registerEmailInput.setAttribute("name", "reg_email");
     registerEmailInput.classList.add("register-email-input");
 
     registerPasswordInput.setAttribute("type", "password");
-    registerPasswordInput.setAttribute("placeholder", "Enter Password!");
+    registerPasswordInput.setAttribute("placeholder", "Enter Password");
     registerPasswordInput.setAttribute("id", "reg_password");
     registerPasswordInput.setAttribute("name", "reg_pwd");
     registerPasswordInput.classList.add("register-password-input");
 
     registerRePasswordInput.setAttribute("type", "password");
-    registerRePasswordInput.setAttribute("placeholder", "Enter Password again!");
+    registerRePasswordInput.setAttribute("placeholder", "Enter Password again");
     registerRePasswordInput.classList.add("register-password-input");
 
     registerAmBtn.setAttribute("class", "already-member-button");
