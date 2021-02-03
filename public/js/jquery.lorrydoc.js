@@ -1,12 +1,10 @@
 $.extend({
   checkLoggedIn:function(callbackFnk){
-
     var request = $.ajax({
       url: "http://127.0.0.1:1337/checkLoggedIn",
       type: "GET",
       dataType: 'json',
     });
-
     request.done(function( msg ) {
       if(typeof callbackFnk === 'function') callbackFnk.call(this,msg);
     });
@@ -32,7 +30,6 @@ $.extend({
     });
   },
   getProblem:function(callbackFnk) {
-    console.log(document.querySelector(".selected-brand"));
     data = "&brand_id=" + document.querySelector(".selected-brand").dataset.id + "&brand_name=" + document.querySelector(".selected-brand").dataset.val;
 
     var request = $.ajax({
@@ -50,7 +47,24 @@ $.extend({
       if (typeof callbackFnk === 'function') callbackFnk.call(this, 0);
     });
   },
+  getSolution:function(callbackFnk){
+    data = "&problem_id=" + document.querySelector(".selected-problem").dataset.id + "&problem_name=" + document.querySelector(".selected-problem").dataset.val;
 
+    var request = $.ajax({
+      url: "http://127.0.0.1:1337/getSolution",
+      type: "POST",
+      data: data,
+      dataType: 'json',
+    });
+
+    request.done(function (msg) {
+      if (typeof callbackFnk === 'function') callbackFnk.call(this, msg);
+    });
+
+    request.fail(function (jqXHR, textStatus, errorThrown) {
+      if (typeof callbackFnk === 'function') callbackFnk.call(this, 0);
+    });
+  },
   buildRegister:function(){
     var registerRow = document.createElement("div");
     var registerContainer = document.createElement("div");
@@ -299,8 +313,6 @@ $.extend({
       let inputId = inputElem.id; //Input ID
       let inputBorderColor; //Input border color
 
-
-
       let iconElem = document.createElement("i");
 
       let formOffsetTop = inputElem.parentNode.offsetTop;
@@ -342,12 +354,7 @@ $.extend({
         inputElem.before(iconElem);
 
         feather.replace();
-
-        console.log($(".reg-icon"));
-
       }
-
-
     }
   },
   saveCustomer: function(){
@@ -400,11 +407,6 @@ $.extend({
     loginSubmitBtn.setAttribute("class", "login-submit-button");
     loginSubmitBtn.setAttribute("type", "submit");
     loginSubmitBtn.setAttribute("value", "Login");
-
-
-
-
-    console.log(window);
 
     signUpBtn.setAttribute("class", "sign-up-button");
     signUpBtn.textContent = "Sign up";
@@ -485,9 +487,9 @@ $.extend({
 
   buildSelect:function(typeNum, preSelVal){
     //typeNum = Stage
-    //0 = Brand
-    //1 = Problem
-    //2 = solution(?)
+    //1 = Brand
+    //2 = Problem
+    //3 = solution(?)
     //preSelVal = if val has been selected before
 
     let typeArray;
@@ -504,37 +506,32 @@ $.extend({
       case 1:
         if(preSelVal != undefined){
           sessTypeName = preSelVal.brand_name;
+          console.log(sessTypeName);
         }
         typeName = "brand";
         $.getBrand(function(retVal){
           typeArray = retVal;
-          console.log(retVal);
           createSelect(typeArray, typeName, sessTypeName);
         });
         break;
       case 2:
+        if(preSelVal != undefined){
+          sessTypeName = preSelVal.problem_str;
+        }
         typeName = "problem";
 
         $.getProblem(function(retVal){
           typeArray = retVal;
-          console.log(typeArray);
-          createSelect(typeArray, typeName);
+          createSelect(typeArray, typeName, sessTypeName);
         });
         break;
-      case 0:
-        console.log(preSelVal);
-
-
-        break;
       default:
-        typeName = "brand";
+        console.log(":D");
         break;
     }
+
     //Where we build
     function createSelect(typeArray, typeName, sessTypeName){
-
-
-
       if(typeName.length > 1 && document.querySelectorAll(".select-container").length < 1){
 
         let selectDiv = document.createElement("div");
@@ -570,9 +567,6 @@ $.extend({
             selectOption.textContent = typeForLoopName;
 
             if(sessTypeName == typeForLoopName){
-              console.log("Sess " + sessTypeName);
-              console.log("Real " + typeForLoopName);
-
               selectOption.setAttribute("selected", "true");
             }
 
@@ -604,49 +598,74 @@ $.extend({
     //slectedId = Id of selected value
     //typeName = Name of type
     //typeNum = Num of type
-    let selectedContHeader;
-
-
-    if(typeNum == 1){
-      selectedContHeader = document.createElement("span");
-
-      selectedContHeader.classList.add("selected-container-header");
-
-      selectedContHeader.textContent = "Selected Values";
-
-      selectedContHeader.style.position = "relative";
-      selectedContHeader.style.fontSize = 25+"px";
-      selectedContHeader.style.top = 100 + "px";
-
-      lorryDocSolutionCont.style.textAlign = "center";
-
-      lorryDocSolutionCont.append(selectedContHeader);
-    }
 
     let selectedDiv = document.createElement("div");
     let selectedSpan = document.createElement("span");
-
+    let selectedDesc = document.createElement("span");
 
     //Styling selected elements
-    selectedDiv.classList.add("selected-"+typeName+"-container");
-    selectedDiv.style.position = "relative";
-    selectedDiv.style.top = 100 + "px";
+    selectedDiv.classList.add("selected-"+typeName+"-container", "selected-container");
+
+    selectedDesc.classList.add("selected-desc-" + typeName);
+    selectedDesc.textContent = "Selected " + typeName + ":";
 
     selectedSpan.classList.add("selected-" + typeName);
     selectedSpan.dataset.id = selectedId;
     selectedSpan.dataset.val = selectedVal;
     selectedSpan.textContent = selectedVal;
 
-    console.log("It's appended");
-    selectedDiv.append(selectedSpan);
-    lorryDocSolutionCont.append(selectedDiv);
+    selectedDiv.append(selectedDesc);
 
-    let nextSelect = ++typeNum;
-    initSelects(nextSelect);
+    selectedDiv.append(selectedSpan);
+
+    lorryDocSolutionCont.appendChild(selectedDiv);
+
+    let nextVal = ++typeNum;
+    switch(nextVal){
+      case 2:
+        initSelects(nextVal);
+        break;
+      case 3:
+        $.getSolution(function(retVal){
+          let solArr = retVal;
+          dispSolution(solArr);
+        });
+        break;
+      default:
+        console.log(nextVal);
+        break;
+    }
+
+    function dispSolution(solArr){
+      let sol_name;
+      let sol_id;
+
+      for(i = 0; i < solArr.length; i++){
+        sol_name = solArr[i].solution_str;
+        sol_id = solArr[i].solution_id;
+      }
+      let solutionDiv = document.createElement("div");
+      let solutionDesc = document.createElement("span");
+      let solutionSpan = document.createElement("span");
+
+      solutionDiv.classList.add("solution-div");
+
+      solutionDesc.classList.add("solution-desc-span");
+      solutionDesc.textContent = "Recommended Solution";
+
+      solutionSpan.classList.add("solution-span");
+      solutionSpan.dataset.id = sol_id;
+      solutionSpan.textContent = sol_name;
+
+      solutionDiv.append(solutionDesc);
+      solutionDiv.append(solutionSpan);
+
+      lorryDocSolutionCont.appendChild(solutionDiv);
+      initSelects(nextVal);
+    }
   },
 
   selectBackFunc: function(typeNum){
-
     if(document.querySelectorAll(".back-button").length == 0){
       let backBtn = document.createElement("span");
       backBtn.classList.add("back-button");
@@ -655,42 +674,46 @@ $.extend({
     }
 
     let buttonBack = document.querySelector(".back-button");
-
     buttonBack.onclick = function(e){
+      if(typeNum == 3 && document.querySelectorAll(".problem-select-cont").length >0){
+        --typeNum;
+      }
 
-      $.ajax({
-        url: "http://127.0.0.1:1337/getSelected",
-        type: "GET",
-        dataType: 'json',
-        success: function (xdata) {
-
-          if(typeNum == 3 && $(".selected-problem-container").length <= 0){
-            --typeNum;
-          }
-
-          let selectedVal = xdata;
-          switch(typeNum){
-            case 2:
-              $(".select-container").remove();
-              $.buildSelect(1, selectedVal);
-              $(".selected-brand-container").remove();
-              break;
-            case 3:
-              $.buildSelect(2, selectedVal);
-              $(".selected-problem-container").remove();
-              break;
-            default:
-              console.log(":)");
-              break;
-          }
-
-
-        },
-        error: function (xdata) {
-          console.log("ERROR");
+      $.getSessVal(function(retVal){
+        let selectedVal = retVal;
+        switch(typeNum){
+          case 2:
+            $(".select-container").remove();
+            $.buildSelect(1, selectedVal);
+            $(".selected-brand-container").remove();
+            break;
+          case 3:
+            $(".select-container").remove();
+            $.buildSelect(2, selectedVal);
+            $(".selected-problem-container").remove();
+            $(".solution-div").remove();
+            break;
+          default:
+            console.log(":)");
+            break;
         }
-      });
+      })
       e.preventDefault();
     }
+  },
+
+  getSessVal: function(callbackFnk){
+    var request = $.ajax({
+      url: "http://127.0.0.1:1337/getSelected",
+      type: "GET",
+      dataType: 'json',
+    });
+    request.done(function( msg ) {
+      if(typeof callbackFnk === 'function') callbackFnk.call(this,msg);
+    });
+
+    request.fail(function(jqXHR,textStatus,errorThrown) {
+      if(typeof callbackFnk === 'function') callbackFnk.call(this,0);
+    });
   }
 })

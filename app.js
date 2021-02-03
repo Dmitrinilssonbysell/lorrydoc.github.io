@@ -35,9 +35,6 @@ app.post('/add', function(req,res){
 
   var data = req.body;
 
-  //data.reg_name
-  //data.reg_email
-  //data.reg_password
   dbInsertion(data);
   return res.status(status_code).send(data);
 })
@@ -49,19 +46,19 @@ function dbInsertion(data){
   let safePwd = hash(data.reg_password);
   let sql = 'insert into customer(customer_first_name, customer_last_name, customer_email, customer_password) values (?,?,?,?)';
   connectionObject.query(sql,
-    [data.reg_first_name,
+    [
+      data.reg_first_name,
       data.reg_last_name,
       data.reg_email,
       safePwd
     ],
-  function (err, result) {
+  function (err) {
     if (err) {
       var error = error + 1;
       var status_code = 404;
       var error_message = "Sorry data could not be entered something is wrong in the sql query syntax";
       console.log("error in the sql query" + status_code);
     }
-    else console.log("1 row inserted");
   })
   connectionObject.end();
 }
@@ -74,10 +71,6 @@ app.post('/checkEmail', function(req,res){
 
   var data = req.body;
 
-  //data.reg_name
-  //data.reg_email
-  //data.reg_password
-
   var connectionObject = dbConnection();
 
   let sql = "SELECT COUNT(customer_id) AS emailCount FROM customer WHERE customer_email = ?";
@@ -89,7 +82,6 @@ app.post('/checkEmail', function(req,res){
       console.log("error in the sql query" + status_code)
     }
     else{
-      console.log(result);
       return res.send(result);
     }
   })
@@ -116,7 +108,7 @@ function dbLogin(data,res,req){
 
   let userdata = data.login_email;
 
-  let sql = "SELECT customer_id FROM customer WHERE customer_email = ? and customer_password = '"+ safePwdCheck +"'";
+  let sql = "SELECT customer_id AS customer_id FROM customer WHERE customer_email = ? and customer_password = '"+ safePwdCheck +"'";
   connectionObject.query(sql, [userdata], function (err, result) {
     if (err) {
       var error = error + 1;
@@ -146,7 +138,7 @@ app.get('/checkLoggedIn', function(req, res){
     return res.send("0");
   }
   //Sql to get all other needed data
-  let sql = "SELECT customer_id, CONCAT(customer_first_name, ' ', customer_last_name) customer_full_name  FROM customer WHERE customer_id = '"+ customerId +"'";
+  let sql = "SELECT customer_id AS customer_id, CONCAT(customer_first_name, ' ', customer_last_name) customer_full_name  FROM customer WHERE customer_id = '"+ customerId +"'";
   connectionObject.query(sql, function (err, result) { //Execute sql
     if (err) {
       var error = error + 1;
@@ -165,9 +157,8 @@ app.get('/checkLoggedIn', function(req, res){
 app.post('/getBrands', function(req, res){
   var connectionObject = dbConnection();//Establish connection
   sess = req.session;
-  console.log("Hereadas");
   if(req.session.brand_name != undefined){
-    //If brand exist in session
+    //res.send(req.session.brand_name);
   }
 
   //Sql to get all other needed data
@@ -183,7 +174,6 @@ app.post('/getBrands', function(req, res){
       return res.send(result);
     }
   })
-
   connectionObject.end();
 })
 
@@ -201,7 +191,7 @@ app.post('/getProblem', function(req, res){
 
   let querydata = data.brand_id;
 
-  let sql = "SELECT problem_id, problem_str FROM problem WHERE brand_id = ?";
+  let sql = "SELECT problem_id AS problem_id, problem_str AS problem_str FROM problem WHERE brand_id = ?";
   connectionObject.query(sql, [querydata], function (err, result) { //Execute sql
     if (err) {
       var error = error + 1;
@@ -210,11 +200,40 @@ app.post('/getProblem', function(req, res){
       console.log("error in the sql query" + status_code);
     }
     else {
-
       return res.send(result);
     }
   })
+  connectionObject.end();
+})
 
+app.post('/getSolution', function(req,res){
+  var connectionObject = dbConnection();//Establish connection
+  sess = req.session;
+
+  var data = req.body;
+
+  //Add Problem to session
+  req.session.problem_name = data.problem_name;
+  req.session.problem_id = data.problem_id;
+  //Add Brand selected stage
+
+
+  //Sql to get all other needed data
+
+  let querydata = data.problem_id;
+
+  let sql = "SELECT solution_id AS solution_id, solution_str AS solution_str FROM solution WHERE problem_id = ?";
+  connectionObject.query(sql, [querydata], function (err, result) { //Execute sql
+    if (err) {
+      var error = error + 1;
+      var status_code = 404;
+      var error_message = "Sorry data could not be entered something is wrong in the sql query syntax";
+      console.log("error in the sql query" + status_code);
+    }
+    else {
+      return res.send(result);
+    }
+  })
   connectionObject.end();
 })
 
@@ -229,16 +248,15 @@ app.get('/getSelected', function(req,res){
 
     let selectedVal = {
       brand_name: req.session.brand_name,
-      brand_id: req.session.brand_id
+      brand_id: req.session.brand_id,
+      problem_str: req.session.problem_name,
+      problem_id: req.session.problem_id,
+      selStage: req.session.selStage
     }
 
     return res.send(selectedVal);
   })
-  })
-
-
-
-
+})
 
 //Conn to db
 function dbConnection() {

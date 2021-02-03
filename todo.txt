@@ -1,13 +1,21 @@
-Build register as a function where you get to know what is wrong and it's more efficient
+Fix initSelects to understandable
 
-Build login where you get to know whats wrong and it's more efficient
 
-Build select for Problem and Brand where it checks for already selected problem and brand in nodejs session and puts the value as main in the case of refresh
+Find a way to send val as 3 where it creates solution{
+    Send ajax within with session saved problem_id to get the solution.
+}
 
-Fix up Main.js file
+Move create solution out from create select and create $.getSolution or something
+where you get the solution and creates the div and put everything into it.
 
-Fix up app.js file
+##FROM MAIN
 
-AJAX request with retVal of all session stored variables
-
-On register since not HTTPS send email to database and compare if exist
+    console.log(sessVal);
+    if(sessVal.brand_id != undefined && sessVal.brand_id > 0){
+      val = 2;
+      console.log("Hej");
+      if(sessVal.problem_id != undefined && sessVal.problem_id > 0){
+        val=3;
+        console.log("Hajasda");
+      }
+    }else
