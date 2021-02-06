@@ -48,23 +48,38 @@ $.extend({
     });
   },
   getSolution:function(callbackFnk){
-    data = "&problem_id=" + document.querySelector(".selected-problem").dataset.id + "&problem_name=" + document.querySelector(".selected-problem").dataset.val;
+    $.getSessVal(function(retVal){
+     let sessVal = retVal;
+     let prob_id_val;
+     let prob_str_val;
 
-    var request = $.ajax({
-      url: "http://127.0.0.1:1337/getSolution",
-      type: "POST",
-      data: data,
-      dataType: 'json',
-    });
+     if(document.querySelectorAll(".selected-problem").length > 0){
+       prob_id_val = document.querySelector(".selected-problem").dataset.id;
+       prob_str_val = document.querySelector(".selected-problem").dataset.val;
+     }else if(sessVal.problem_id != undefined && sessVal.problem_str != undefined){
+       prob_id_val = sessVal.problem_id;
+       prob_str_val = sessVal.problem_str;
+     }
 
-    request.done(function (msg) {
-      if (typeof callbackFnk === 'function') callbackFnk.call(this, msg);
-    });
+      data = "&problem_id=" + prob_id_val + "&problem_name=" + prob_str_val;
 
-    request.fail(function (jqXHR, textStatus, errorThrown) {
-      if (typeof callbackFnk === 'function') callbackFnk.call(this, 0);
+      var request = $.ajax({
+        url: "http://127.0.0.1:1337/getSolution",
+        type: "POST",
+        data: data,
+        dataType: 'json',
+      });
+
+      request.done(function (msg) {
+        if (typeof callbackFnk === 'function') callbackFnk.call(this, msg);
+      });
+
+      request.fail(function (jqXHR, textStatus, errorThrown) {
+        if (typeof callbackFnk === 'function') callbackFnk.call(this, 0);
+      });
     });
   },
+
   buildRegister:function(){
     var registerRow = document.createElement("div");
     var registerContainer = document.createElement("div");
@@ -284,8 +299,6 @@ $.extend({
           errors.passwordIsValid = true;
         }
       });
-
-
 
       //Register btn
       registerSubmitBtn.onclick = function(e){
@@ -593,7 +606,7 @@ $.extend({
       }
     }
   },
-  displaySelected: function(selectedVal, selectedId, typeName, typeNum){
+  displaySelected: function(selectedVal, selectedId, typeName, typeNum, doInit){
     //selectedVal = selected value from selectMenu
     //slectedId = Id of selected value
     //typeName = Name of type
@@ -621,20 +634,28 @@ $.extend({
     lorryDocSolutionCont.appendChild(selectedDiv);
 
     let nextVal = ++typeNum;
-    switch(nextVal){
-      case 2:
-        initSelects(nextVal);
-        break;
-      case 3:
-        $.getSolution(function(retVal){
-          let solArr = retVal;
-          dispSolution(solArr);
-        });
-        break;
-      default:
-        console.log(nextVal);
-        break;
+    if(doInit == undefined || doInit == 1){
+      switch(nextVal){
+        case 2:
+          initSelects(nextVal);
+          break;
+        case 3:
+          $.displaySolution(nextVal);
+          break;
+        default:
+          console.log(nextVal);
+          break;
+      }
     }
+    else{
+      return;
+    }
+  },
+  displaySolution: function(nextVal){
+    $.getSolution(function(retVal){
+      let solArr = retVal;
+      dispSolution(solArr);
+    });
 
     function dispSolution(solArr){
       let sol_name;
@@ -644,6 +665,7 @@ $.extend({
         sol_name = solArr[i].solution_str;
         sol_id = solArr[i].solution_id;
       }
+
       let solutionDiv = document.createElement("div");
       let solutionDesc = document.createElement("span");
       let solutionSpan = document.createElement("span");
@@ -661,6 +683,8 @@ $.extend({
       solutionDiv.append(solutionSpan);
 
       lorryDocSolutionCont.appendChild(solutionDiv);
+
+      ++nextVal;
       initSelects(nextVal);
     }
   },
@@ -675,10 +699,13 @@ $.extend({
 
     let buttonBack = document.querySelector(".back-button");
     buttonBack.onclick = function(e){
+      console.log(typeNum);
       if(typeNum == 3 && document.querySelectorAll(".problem-select-cont").length >0){
         --typeNum;
       }
-
+      else if(typeNum >= 4 && document.querySelectorAll(".solution-div").length > 0){
+        typeNum = 3;
+      }
       $.getSessVal(function(retVal){
         let selectedVal = retVal;
         switch(typeNum){
@@ -694,11 +721,24 @@ $.extend({
             $(".solution-div").remove();
             break;
           default:
-            console.log(":)");
+            alert("Error");
             break;
         }
       })
       e.preventDefault();
+    }
+  },
+  pageResetBtn: function(){
+    if(document.querySelectorAll(".reset-button").length == 0){
+      let resetBtn = document.createElement("span");
+      resetBtn.classList.add("reset-button");
+      resetBtn.textContent = "Reset";
+      lorryDocWelcome.append(resetBtn);
+    }
+    let resetButton = document.querySelector(".reset-button");
+
+    resetButton.onclick = function(e){
+
     }
   },
 

@@ -4,30 +4,70 @@ const lorryDocWelcome = lorryDocMain.querySelector(".lorrydoc-welcome-container"
 const lorryDocContainer = lorryDocMain.querySelector(".lorrydoc-container");
 const lorryDocSolutionCont = lorryDocMain.querySelector(".lorrydoc-solution-container");
 
-/*Variable value change after every step in process*/
-var brandSelected = 0;
-
 //Window onload
 window.onload = function() {
   onPageLoad();
 }
 
+function getPreSel(){
+  $.getSessVal(function(retVal){
+    let sessVal = retVal;
+    let sessSelectedVal;
+    let sessSelectedId;
+    let sessTypeName;
+    let sessTypeNum;
+    let doInit;
+
+    if(sessVal.selStage != undefined){
+      for(i = 1; i < sessVal.selStage; i++){
+        if(i == 1){
+          sessSelectedVal = sessVal.brand_name;
+          sessSelectedId = sessVal.brand_id;
+          sessTypeName = "brand";
+          sessTypeNum = i;
+        }
+        else if(i == 2){
+          sessSelectedVal = sessVal.problem_str;
+          sessSelectedId = sessVal.problem_id;
+          sessTypeName = "problem";
+          sessTypeNum = i;
+        }
+        $.displaySelected(sessSelectedVal, sessSelectedId, sessTypeName,sessTypeNum, 0);
+      }
+      if(i == 3){
+        $.displaySolution(4);
+      }
+      console.log(sessVal.selStage);
+      if(sessVal.selStage < 3){
+        if(sessVal.selStage == 2){
+          initSelects(2);
+        }
+      }
+      $.selectBackFunc(i);
+    }
+    else {
+      initSelects();
+      return;
+    }
+
+  });
+
+}
+
 function initSelects(val){
   //Val = type
-
   if(val == undefined){
     val = 1;
   }
-
-  $.getSessVal(function(retVal){
-    let sessVal = retVal;
-
-    if(val > 0 && val < 3){
-      $.buildSelect(val, sessVal);
-    }
-    $.selectBackFunc(val);
-  });
+  if(val > 0 && val < 3){
+    $.buildSelect(val);
+  }
+  else if(val == 3){
+    $.displaySolution(4);
+  }
+  $.selectBackFunc(val);
 }
+
 //On page load
 function onPageLoad(){
 
@@ -39,7 +79,7 @@ function onPageLoad(){
       if(document.getElementsByClassName("login-row").length > 0){
         $(".login-row").remove();//Jquery to remove
       }
-      initSelects();
+      getPreSel();
     }
   });
 }

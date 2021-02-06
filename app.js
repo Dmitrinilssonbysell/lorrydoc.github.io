@@ -157,9 +157,7 @@ app.get('/checkLoggedIn', function(req, res){
 app.post('/getBrands', function(req, res){
   var connectionObject = dbConnection();//Establish connection
   sess = req.session;
-  if(req.session.brand_name != undefined){
-    //res.send(req.session.brand_name);
-  }
+  req.session.selStage = 1;
 
   //Sql to get all other needed data
   let sql = "SELECT * FROM brand";
@@ -186,6 +184,8 @@ app.post('/getProblem', function(req, res){
   //Add Brand to session
   req.session.brand_name = data.brand_name;
   req.session.brand_id = data.brand_id;
+
+  req.session.selStage = 2;
 
   //Sql to get all other needed data
 
@@ -215,9 +215,8 @@ app.post('/getSolution', function(req,res){
   //Add Problem to session
   req.session.problem_name = data.problem_name;
   req.session.problem_id = data.problem_id;
-  //Add Brand selected stage
 
-
+  req.session.selStage = 3;
   //Sql to get all other needed data
 
   let querydata = data.problem_id;

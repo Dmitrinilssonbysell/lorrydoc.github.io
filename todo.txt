@@ -1,21 +1,5 @@
-Fix initSelects to understandable
-
-
-Find a way to send val as 3 where it creates solution{
-    Send ajax within with session saved problem_id to get the solution.
-}
-
-Move create solution out from create select and create $.getSolution or something
-where you get the solution and creates the div and put everything into it.
-
-##FROM MAIN
-
-    console.log(sessVal);
-    if(sessVal.brand_id != undefined && sessVal.brand_id > 0){
-      val = 2;
-      console.log("Hej");
-      if(sessVal.problem_id != undefined && sessVal.problem_id > 0){
-        val=3;
-        console.log("Hajasda");
-      }
-    }else
+Add Forum
+Create reset button
+Fix code in main.js
+            app.js
+            jquery.lorrydoc.js
