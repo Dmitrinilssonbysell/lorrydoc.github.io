@@ -138,7 +138,7 @@ app.get('/checkLoggedIn', function(req, res){
     return res.send("0");
   }
   //Sql to get all other needed data
-  let sql = "SELECT customer_id AS customer_id, CONCAT(customer_first_name, ' ', customer_last_name) customer_full_name  FROM customer WHERE customer_id = '"+ customerId +"'";
+  let sql = "SELECT customer_id AS customer_id, CONCAT(customer_first_name, ' ', customer_last_name) customer_full_name  FROM customer WHERE customer_ID = '"+ customerId +"'";
   connectionObject.query(sql, function (err, result) { //Execute sql
     if (err) {
       var error = error + 1;
@@ -160,7 +160,7 @@ app.post('/getBrands', function(req, res){
   req.session.selStage = 1;
 
   //Sql to get all other needed data
-  let sql = "SELECT * FROM brand";
+  let sql = "SELECT brand_ID AS brand_id, brand_NAME AS brand_name FROM brand";
   connectionObject.query(sql, function (err, result) { //Execute sql
     if (err) {
       var error = error + 1;
@@ -191,7 +191,7 @@ app.post('/getProblem', function(req, res){
 
   let querydata = data.brand_id;
 
-  let sql = "SELECT problem_id AS problem_id, problem_str AS problem_str FROM problem WHERE brand_id = ?";
+  let sql = "SELECT problem_ID AS problem_id, problem_STR AS problem_str FROM problem WHERE brand_ID = ?";
   connectionObject.query(sql, [querydata], function (err, result) { //Execute sql
     if (err) {
       var error = error + 1;
@@ -221,7 +221,7 @@ app.post('/getSolution', function(req,res){
 
   let querydata = data.problem_id;
 
-  let sql = "SELECT solution_id AS solution_id, solution_str AS solution_str FROM solution WHERE problem_id = ?";
+  let sql = "SELECT solution_ID AS solution_id, solution_STR AS solution_str FROM solution WHERE problem_ID = ?";
   connectionObject.query(sql, [querydata], function (err, result) { //Execute sql
     if (err) {
       var error = error + 1;
@@ -278,5 +278,4 @@ app.use(express.static(__dirname + '/public'));
 
 app.listen(port, host, function () {
     console.log("Running at http://" + host + ":" + port);
-
 });
