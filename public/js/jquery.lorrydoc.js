@@ -664,7 +664,8 @@ $.extend({
       for(i = 0; i < solArr.length; i++){
         sol_name = solArr[i].solution_str;
         sol_id = solArr[i].solution_id;
-      }
+        }
+
 
       let solutionDiv = document.createElement("div");
       let solutionDesc = document.createElement("span");
@@ -677,10 +678,10 @@ $.extend({
 
       solutionSpan.classList.add("solution-span");
       solutionSpan.dataset.id = sol_id;
-      solutionSpan.textContent = sol_name;
+      solutionSpan.textContent = sol_name;                              
 
       solutionDiv.append(solutionDesc);
-      solutionDiv.append(solutionSpan);
+        solutionDiv.append(solutionSpan);
 
       lorryDocSolutionCont.appendChild(solutionDiv);
 
@@ -688,6 +689,8 @@ $.extend({
       initSelects(nextVal);
     }
   },
+
+
 
   selectBackFunc: function(typeNum){
     if(document.querySelectorAll(".back-button").length == 0){

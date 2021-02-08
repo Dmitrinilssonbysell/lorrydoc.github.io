@@ -50,7 +50,7 @@ body {
 
 /*Solution/Result div*/
 .lorrydoc-solution-container{
-  text-align: center;
+  text-align: left;
 }
 .lorrydoc-solution-container span::after {
   content: "\A";
@@ -59,17 +59,19 @@ body {
 .lorrydoc-solution-container .selected-container{
 
 }
-.lorrydoc-solution-container .selected-desc-brand,
-.lorrydoc-solution-container .selected-desc-problem,
-.lorrydoc-solution-container .solution-desc-span{
-  font-size: 20px;
-  border-bottom: 1px solid black;
-}
-.lorrydoc-solution-container .selected-brand,
-.lorrydoc-solution-container .selected-problem,
-.lorrydoc-solution-container .solution-span{
-  font-size: 15px;
-}
+    .lorrydoc-solution-container .selected-desc-brand,
+    .lorrydoc-solution-container .selected-desc-problem,
+    .lorrydoc-solution-container .solution-desc-span,
+    .lorrydoc-solution-container .support-desc-span {
+        font-size: 20px;
+        border-bottom: 1px solid black;
+    }
+    .lorrydoc-solution-container .selected-brand,
+    .lorrydoc-solution-container .selected-problem,
+    .lorrydoc-solution-container .solution-span,
+    .lorrydoc-solution-container .solution-span-2 {
+        font-size: 15px;
+    }
 
 /*
 .selected-brand-div{
