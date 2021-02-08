@@ -3,8 +3,7 @@
     "",
     "\\public",
     "\\public\\css",
-    "\\public\\js",
-    "\\public\\php"
+    "\\public\\js"
   ],
   "SelectedNode": "\\public\\index.html",
   "PreviewInSolutionExplorer": false

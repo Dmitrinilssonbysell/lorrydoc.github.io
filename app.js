@@ -123,7 +123,6 @@ function dbLogin(data,res,req){
       return res.send(result);
     }
   })
-
   connectionObject.end();
 }
 
@@ -150,7 +149,6 @@ app.get('/checkLoggedIn', function(req, res){
       return res.send(result);
     }
   })
-
   connectionObject.end();
 })
 
