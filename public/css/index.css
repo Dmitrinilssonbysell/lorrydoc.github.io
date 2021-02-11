@@ -12,7 +12,9 @@ body {
     background-image: url(images/lorry-purple.jpeg);
     padding: 20vw;
     margin: 0px;
-    margin-right: 5px;
+    zoom: 1.2;
+    background-position: center;
+    margin-right: 0px;
     height: 70px;
 }
 .lorrydoc-welcome-container h3 {
@@ -104,11 +106,10 @@ body {
 }
 .login-container input[type=submit]{
   position: relative;
-  margin-right: 10vw;
+  margin-right: 5vw;
   width: 100px;
   background-color: lightgrey;
   border: none;
-  right: 0;
 }
 .login-container input[type=password],
 .login-container input[type=email]{
@@ -125,7 +126,6 @@ body {
   right: 0;
 }
 .sign-up-button {
-  position: relative;
   text-decoration: underline;
 }
 
@@ -170,7 +170,7 @@ body {
 
 footer {
   background-color: lightgrey;
-  height: 27vh;
+  height: 30vh;
   text-align: justify;
   color: rgba(65, 62, 62, 0.753);
   padding: 20px;
